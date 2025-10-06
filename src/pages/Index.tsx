@@ -5,8 +5,9 @@ import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileUploadZone } from "@/components/FileUploadZone";
 import { useToast } from "@/hooks/use-toast";
+import logoUrl from "../../image.png";
 
-type UploadMode = "single" | "double" | "";
+type UploadMode = "single" | "double" | "multi" | "";
 
 const Index = () => {
   const [uploadMode, setUploadMode] = useState<UploadMode>("");
@@ -35,7 +36,12 @@ const Index = () => {
 
     toast({
       title: "Upload Successful",
-      description: `Business card ${uploadMode === "double" ? "(both sides)" : "(front side)"} uploaded successfully.`,
+      description:
+        uploadMode === "double"
+          ? "Business card (both sides) uploaded successfully."
+          : uploadMode === "multi"
+          ? "Sheet with multiple front sides uploaded successfully."
+          : "Business card (front side) uploaded successfully.",
     });
 
     // Reset form
@@ -53,20 +59,26 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Animated mesh gradient background */}
-      <div className="absolute inset-0 bg-[var(--gradient-mesh)] opacity-100"></div>
+      <div className="absolute inset-0 bg-[var(--gradient-mesh)] opacity-100 -z-10"></div>
       
       <div className="relative container mx-auto px-4 py-16">
+        {/* Top-left logo */}
+        <img
+          src={logoUrl}
+          alt="Company Logo"
+          className="absolute top-6 left-6 h-10 w-10 rounded-xl shadow-[var(--shadow-soft)] z-10"
+        />
         {/* Header */}
-        <header className="text-center mb-12 space-y-6">
-          <div className="inline-flex items-center justify-center p-4 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl mb-4 shadow-[var(--shadow-glow)] backdrop-blur-sm">
-            <ScanLine className="w-10 h-10 text-primary" strokeWidth={2.5} />
+        <header className="text-center mb-14 space-y-7 z-10 relative">
+          <div className="inline-flex items-center justify-center p-5 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl mb-5 shadow-[var(--shadow-glow)] backdrop-blur-sm">
+            <ScanLine className="w-11 h-11 text-primary" strokeWidth={2.5} />
           </div>
-          <div className="space-y-3">
-            <h1 className="text-5xl md:text-6xl font-bold bg-[var(--gradient-hero)] bg-clip-text text-transparent">
+          <div className="space-y-4">
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white drop-shadow-[0_6px_30px_rgba(0,0,0,0.6)]">
               Business Card Scanner
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Transform your business cards into digital contacts instantly with our AI-powered scanner
+            <p className="text-base md:text-lg text-muted-foreground/90 max-w-3xl mx-auto leading-relaxed">
+              Capture and digitize cards with a premium, AI-powered experience.
             </p>
           </div>
         </header>
@@ -101,6 +113,12 @@ const Index = () => {
                         <span className="font-medium">Both Sides (Front & Back)</span>
                       </div>
                     </SelectItem>
+                    <SelectItem value="multi" className="text-base py-3 cursor-pointer">
+                      <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-full bg-primary/70"></div>
+                        <span className="font-medium">Upload Multiple Pages (one image with multiple fronts)</span>
+                      </div>
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -110,11 +128,17 @@ const Index = () => {
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                   <div className="flex items-center gap-2 text-sm text-primary font-medium">
                     <Sparkles className="w-4 h-4" />
-                    <span>Upload your {uploadMode === "double" ? "card images" : "card image"}</span>
+                    <span>
+                      {uploadMode === "double"
+                        ? "Upload your card images"
+                        : uploadMode === "multi"
+                        ? "Upload a single image containing multiple front sides"
+                        : "Upload your card image"}
+                    </span>
                   </div>
 
                   <FileUploadZone
-                    label="Front Side *"
+                    label={uploadMode === "multi" ? "Sheet with multiple fronts *" : "Front Side *"}
                     file={frontFile}
                     onFileSelect={setFrontFile}
                   />
