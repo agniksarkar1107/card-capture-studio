@@ -58,49 +58,49 @@ export const FileUploadZone = ({
   }, [onFileSelect]);
 
   return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium">{label}</label>
+    <div className="space-y-3">
+      <label className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{label}</label>
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         className={cn(
-          "relative border-2 border-dashed rounded-lg p-8 transition-all duration-300",
-          "hover:border-primary/50 hover:bg-primary/5",
-          isDragging ? "border-primary bg-primary/10" : "border-border",
-          preview ? "bg-muted/30" : "bg-background"
+          "relative border-2 border-dashed rounded-xl p-8 transition-all duration-500",
+          "hover:border-primary/60 hover:bg-primary/5 hover:shadow-[var(--shadow-soft)]",
+          isDragging ? "border-primary bg-primary/10 shadow-[var(--shadow-glow)] scale-[1.02]" : "border-border/60",
+          preview ? "bg-muted/30" : "bg-background/30"
         )}
       >
         {preview ? (
-          <div className="relative">
+          <div className="relative animate-in fade-in zoom-in duration-300">
             <img 
               src={preview} 
               alt="Preview" 
-              className="w-full h-48 object-contain rounded-md"
+              className="w-full h-52 object-contain rounded-lg"
             />
             <Button
               type="button"
               variant="destructive"
               size="icon"
-              className="absolute top-2 right-2 h-8 w-8"
+              className="absolute top-2 right-2 h-9 w-9 shadow-lg"
               onClick={handleRemove}
             >
               <X className="h-4 w-4" />
             </Button>
-            <div className="mt-3 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-              <FileImage className="h-4 w-4" />
-              <span className="truncate max-w-[200px]">{file?.name}</span>
+            <div className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground bg-muted/50 rounded-lg py-2 px-3">
+              <FileImage className="h-4 w-4 text-primary" />
+              <span className="truncate max-w-[250px] font-medium">{file?.name}</span>
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center space-y-4">
-            <div className="p-4 rounded-full bg-primary/10">
-              <Upload className="w-8 h-8 text-primary" />
+          <div className="flex flex-col items-center justify-center space-y-5 py-4">
+            <div className="p-5 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 shadow-[var(--shadow-soft)]">
+              <Upload className="w-10 h-10 text-primary" strokeWidth={2.5} />
             </div>
-            <div className="text-center">
-              <p className="text-sm font-medium mb-1">
+            <div className="text-center space-y-2">
+              <p className="text-base font-medium">
                 Drop your image here, or{" "}
-                <label className="text-primary cursor-pointer hover:underline">
+                <label className="text-primary cursor-pointer hover:underline font-semibold">
                   browse
                   <input
                     type="file"
@@ -111,7 +111,7 @@ export const FileUploadZone = ({
                 </label>
               </p>
               <p className="text-xs text-muted-foreground">
-                Supports: JPG, PNG, WEBP (Max 10MB)
+                Supports: JPG, PNG, WEBP • Max 10MB
               </p>
             </div>
           </div>
