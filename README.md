@@ -1,1 +1,1 @@
-Card uplod studio
+Card upload studio
